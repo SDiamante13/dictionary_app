@@ -1,3 +1,4 @@
+import 'package:dictionary_app/src/WordInputField.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(
             title: const Text('Dictionary App'),
           ),
-          body: const Center(child: Text('Hello World'))),
+          body: const WordInputField()),
     );
   }
 }
