@@ -11,6 +11,7 @@ class WordInputField extends StatefulWidget {
 
 class _WordInputFieldState extends State<WordInputField> {
   final _formKey = GlobalKey<FormState>();
+  final wordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,13 @@ class _WordInputFieldState extends State<WordInputField> {
           children: [
             TextFormField(
               textAlign: TextAlign.center,
+              controller: wordController,
+              validator: (value) {
+                if (value == null || value.isEmpty || _isNumeric(value)) {
+                  return 'Please provide a valid word';
+                }
+                return null;
+              },
             ),
             Padding(
                 padding: const EdgeInsets.symmetric(vertical: 32.0),
@@ -32,14 +40,24 @@ class _WordInputFieldState extends State<WordInputField> {
   }
 
   Future<void> _getDefinition() async {
-    const word = 'courage';
+    final word = wordController.text;
 
-    var data = await http.get(
-        Uri.parse('https://wordsapiv1.p.rapidapi.com/words/$word/definitions'),
-        headers: {
-          'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
-          'x-rapidapi-key': dotenv.get('WORDS_API_KEY'),
-        });
-    print("Get data: ${data.body}");
+    if (_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Processing Data')),
+      );
+
+      var data = await http.get(
+          Uri.parse('https://wordsapiv1.p.rapidapi.com/words/$word/definitions'),
+          headers: {
+            'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+            'x-rapidapi-key': dotenv.get('WORDS_API_KEY'),
+          });
+      print("Get data: ${data.body}");
+    }
+  }
+
+  bool _isNumeric(String result) {
+    return double.tryParse(result) != null;
   }
 }
