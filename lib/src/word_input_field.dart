@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 class WordInputField extends StatefulWidget {
   const WordInputField({Key? key}) : super(key: key);
@@ -12,6 +13,7 @@ class WordInputField extends StatefulWidget {
 class _WordInputFieldState extends State<WordInputField> {
   final _formKey = GlobalKey<FormState>();
   final wordController = TextEditingController();
+  final logger = Logger();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class _WordInputFieldState extends State<WordInputField> {
                 padding: const EdgeInsets.symmetric(vertical: 32.0),
                 child: ElevatedButton(
                   onPressed: _getDefinition,
-                  child: const Text("Get Definition"),
+                  child: const Text('Get Definition'),
                 ))
           ],
         ));
@@ -48,12 +50,13 @@ class _WordInputFieldState extends State<WordInputField> {
       );
 
       var data = await http.get(
-          Uri.parse('https://wordsapiv1.p.rapidapi.com/words/$word/definitions'),
+          Uri.parse(
+              'https://wordsapiv1.p.rapidapi.com/words/$word/definitions'),
           headers: {
             'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
             'x-rapidapi-key': dotenv.get('WORDS_API_KEY'),
           });
-      print("Get data: ${data.body}");
+      logger.i('Get data: ${data.body}');
     }
   }
 

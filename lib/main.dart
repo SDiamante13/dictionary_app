@@ -1,4 +1,4 @@
-import 'package:dictionary_app/src/WordInputField.dart';
+import 'package:dictionary_app/src/word_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
