@@ -1,7 +1,12 @@
 import 'package:dictionary_app/src/WordInputField.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() => runApp(const MyApp());
+Future<void> main() async {
+  await dotenv.load();
+
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 
 class WordInputField extends StatefulWidget {
   const WordInputField({Key? key}) : super(key: key);
@@ -29,7 +31,15 @@ class _WordInputFieldState extends State<WordInputField> {
         ));
   }
 
-  void _getDefinition() {
-    print("Button pressed");
+  Future<void> _getDefinition() async {
+    const word = 'courage';
+
+    var data = await http.get(
+        Uri.parse('https://wordsapiv1.p.rapidapi.com/words/$word/definitions'),
+        headers: {
+          'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+          'x-rapidapi-key': dotenv.get('WORDS_API_KEY'),
+        });
+    print("Get data: ${data.body}");
   }
 }
